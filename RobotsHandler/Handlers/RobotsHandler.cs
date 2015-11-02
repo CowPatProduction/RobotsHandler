@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace RobotsHandler.Handlers
 {
@@ -8,7 +10,7 @@ namespace RobotsHandler.Handlers
 
         public void ProcessRequest(HttpContext context)
         {
-            string content;
+            var content = string.Empty;
             var response = context.Response;
 
             try
@@ -16,7 +18,11 @@ namespace RobotsHandler.Handlers
                 response.ContentType = "text/plain";
                 response.Clear();
                 response.BufferOutput = true;
-                content = "# robots.txt for http://www.example.at";
+
+                int mandatorNumber = 1;
+                var robot = GetRobotData(mandatorNumber);
+
+                content = robot.Aggregate(content, (current, line) => current + line);
             }
             catch
             {
@@ -25,5 +31,26 @@ namespace RobotsHandler.Handlers
 
             response.Write(content);
         }
+
+        internal IList<RobotData> GetRobotData(int mandatorNumber)
+        {
+            return new List<RobotData>
+            {
+                new RobotData { Line = "# robots.txt for http://cpp.cloudapp.net/" },
+                new RobotData { Line = "User-agent: *" },
+                new RobotData { Line = "Disallow: /*.js$" },
+                new RobotData { Line = "Disallow: /*.css$" },
+                new RobotData { Line = "# robots.txt for http://www.example.at" },
+                new RobotData { Line = "# robots.txt for http://www.example.at" },
+                new RobotData { Line = "# robots.txt for http://www.example.at" },
+                new RobotData { Line = "# robots.txt for http://www.example.at" },
+                new RobotData { Line = "Sitemap: http://admiral.at/sitemap.xml" }
+            };
+        }
+    }
+
+    public class RobotData
+    {
+        public string Line { get; set; }
     }
 }
