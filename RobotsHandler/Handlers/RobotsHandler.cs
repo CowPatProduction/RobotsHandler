@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
@@ -22,7 +23,7 @@ namespace RobotsHandler.Handlers
                 int mandatorNumber = 1;
                 var robot = GetRobotData(mandatorNumber);
 
-                content = robot.Aggregate(content, (current, line) => current + line);
+                content = robot.Aggregate(content, (current, item) => current + (item.Line + Environment.NewLine));
             }
             catch
             {
@@ -40,11 +41,8 @@ namespace RobotsHandler.Handlers
                 new RobotData { Line = "User-agent: *" },
                 new RobotData { Line = "Disallow: /*.js$" },
                 new RobotData { Line = "Disallow: /*.css$" },
-                new RobotData { Line = "# robots.txt for http://www.example.at" },
-                new RobotData { Line = "# robots.txt for http://www.example.at" },
-                new RobotData { Line = "# robots.txt for http://www.example.at" },
-                new RobotData { Line = "# robots.txt for http://www.example.at" },
-                new RobotData { Line = "Sitemap: http://admiral.at/sitemap.xml" }
+                new RobotData { Line = "Disallow: /private/" },
+                new RobotData { Line = "Sitemap: http://cpp.cloudapp.net/sitemap.xml" }
             };
         }
     }
